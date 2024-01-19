@@ -1,5 +1,13 @@
 ### Hi there 👋
 
+
+      d8888b. db   db d888888b db        d88b   d888888b db   db d88888b d88888b d8888b. db   db d888888b db      d888888b db    db 
+      88   8D 88   88    88    88       8P  Y8     88    88   88 88'     88'     88  `8D 88   88   `88'   88        `88'   `8b  d8' 
+      88oodD' 88ooo88    88    88      88    88    88    88ooo88 88ooooo 88ooooo 88oodD' 88ooo88    88    88         88     `8bd8'  
+      88      88   88    88    88      88    88    88    88   88 88      88      88      88   88    88    88         88     .dPYb.  
+      88      88   88    88    88booo   8b  d8     88    88   88 88.     88.     88      88   88   .88.   88booo.   .88.   .8P  Y8. 
+      88      YP   YP Y888888P Y88888P   Y88P      YP    YP   YP Y88888P Y88888P 88      YP   YP Y888888P Y88888P Y888888P YP    YP 
+
 <!--
 **Philotheephilix/PhiloTheePhilix** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
