@@ -12,6 +12,7 @@
                                                                                                                      
                                                                                                                      
 
+[![GitHub Streak](https://streak-stats.demolab.com/?user=Philotheephilix)](https://git.io/streak-stats)
 <!--
 **Philotheephilix/PhiloTheePhilix** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
