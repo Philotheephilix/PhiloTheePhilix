@@ -12,7 +12,7 @@
                                                                                                                      
                                                                                                                      
 
-[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=PhiloTheePhilix&theme=highcontrast&hide_border=true&border_radius=4.9)](https://git.io/streak-stats)  [![Spotify](https://novatorem.bgstatic.vercel.app/api/spotify)](https://open.spotify.com/track/2DgdHcjWmO3qd50RzuBLgZ?si=4dbe8edb90784260&nd=1&dlsi=1a20a54c9fa44ac1)
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=PhiloTheePhilix&theme=highcontrast&hide_border=true&border_radius=4.9)](https://git.io/streak-stats)  
 <!--
 **Philotheephilix/PhiloTheePhilix** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
