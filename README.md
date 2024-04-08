@@ -24,4 +24,6 @@
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=philotheephilix&show_icons=true&locale=en" alt="philotheephilix" /></p>
 
-<p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=philotheephilix&" alt="philotheephilix" /></p>
+
+
+[![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=PhiloTheePhilix&bg_color=000000&color=ffffff&line=1f5b89&point=ffffff&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
