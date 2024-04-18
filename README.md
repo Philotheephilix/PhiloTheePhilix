@@ -5,7 +5,7 @@
 
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=philotheephilix" alt="philotheephilix" /></a> </p>
 
-- 🔭 I’m currently working on [IoT-Blueprint](https://github.com/Philotheephilix/IoT-Blueprint)
+- 🔭 I’m currently working on [Dell-fan-control-config-system-service](https://github.com/Philotheephilix/Dell-fan-control-config-system-service)
 
 - 🌱 I’m currently learning **React**
 
