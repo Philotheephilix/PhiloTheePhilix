@@ -5,7 +5,7 @@
 
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=philotheephilix" alt="philotheephilix" /></a> </p>
 
-- 🔭 I’m currently working on [Quiz-Solver-Using-Chat-GPT](https://github.com/Philotheephilix/Quiz-Solver-Using-Chat-GPT)
+- 🔭 I’m currently working on [Small-Scale-Business-incubator-FLUTTER]([https://github.com/Philotheephilix/Quiz-Solver-Using-Chat-GPT](https://github.com/Philotheephilix/Small-Scale-Business-incubator-FLUTTER))
 
 - 🌱 I’m currently learning **React**
 
