@@ -4,9 +4,7 @@
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=philotheephilix&label=Profile%20views&color=0e75b6&style=flat" alt="philotheephilix" /> </p>
 
 
-- 🔭 I’m currently working on [My portfolio](https://github.com/Philotheephilix/My-Portfolio)
-
-- 🌱 I’m currently learning **Rust**
+- 🌱 I’m currently learning **Ai Agents**
 
 - 📫 How to reach me **philosanjay5@gmail.com**
 
