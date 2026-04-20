@@ -28,10 +28,10 @@
 
 {{#each featured}}
 ```
-┌─ [ {{upper repo}} ] {{#if private}}─────── private ─┐{{else}}──── public ─┐{{/if}}
+{{{cardTop repo private}}}
 │  {{blurb}}
 │  {{join tags ", "}}
-└─────────────────────────────────────────┘
+{{{cardBottom}}}
 ```
 {{#unless private}}
 → [{{repo}}](https://github.com/{{repo}})

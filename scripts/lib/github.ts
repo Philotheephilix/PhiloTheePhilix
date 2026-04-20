@@ -85,7 +85,7 @@ export function parseRecentCommits(
   const commits: CommitRow[] = [];
   for (const e of events) {
     if (e.type !== "PushEvent" || !e.payload.commits) continue;
-    for (const c of e.payload.commits) {
+    for (const c of [...e.payload.commits].reverse()) {
       commits.push({ sha: c.sha, message: c.message, repo: e.repo.name });
       if (commits.length >= n) break;
     }

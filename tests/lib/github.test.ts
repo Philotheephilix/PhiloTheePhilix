@@ -70,8 +70,8 @@ describe("parseRecentCommits", () => {
         repo: { name: "u/a" },
         payload: {
           commits: [
-            { sha: "abc123", message: "feat: x" },
-            { sha: "def456", message: "fix: y" },
+            { sha: "a-older", message: "feat: x" },
+            { sha: "a-newer", message: "fix: y" },
           ],
         },
         created_at: "2026-04-20T10:00:00Z",
@@ -79,14 +79,33 @@ describe("parseRecentCommits", () => {
       {
         type: "PushEvent",
         repo: { name: "u/b" },
-        payload: { commits: [{ sha: "ghi789", message: "chore: z" }] },
+        payload: { commits: [{ sha: "b-only", message: "chore: z" }] },
         created_at: "2026-04-19T10:00:00Z",
       },
     ];
     const out = parseRecentCommits(events, 3);
     expect(out.length).toBe(3);
-    expect(out[0]!.sha.startsWith("abc123")).toBe(true);
+    expect(out[0]!.sha).toBe("a-newer");
     expect(out[0]!.repo).toBe("u/a");
+  });
+
+  it("returns newest commit of a push before older commits in same push", () => {
+    const events = [
+      {
+        type: "PushEvent",
+        repo: { name: "u/a" },
+        payload: {
+          commits: [
+            { sha: "old", message: "older commit" },
+            { sha: "mid", message: "middle commit" },
+            { sha: "new", message: "newest commit" },
+          ],
+        },
+        created_at: "2026-04-20T10:00:00Z",
+      },
+    ];
+    const out = parseRecentCommits(events, 1);
+    expect(out[0]!.sha).toBe("new");
   });
 
   it("pads to exactly N rows with null placeholders when fewer commits exist", () => {

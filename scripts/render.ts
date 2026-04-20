@@ -41,15 +41,22 @@ Handlebars.registerHelper("glyph", (i: number, n: number) =>
 Handlebars.registerHelper("join", (arr: unknown[], sep: string) =>
   Array.isArray(arr) ? arr.join(sep) : "",
 );
+Handlebars.registerHelper("cardTop", (repo: string, isPrivate: boolean) => {
+  const title = String(repo).split("/").pop() ?? "";
+  const tag = isPrivate ? "private" : "public";
+  const WIDTH = 45; // inside-the-box width; matches bottom rule dashes
+  const titlePart = `┌─ [ ${title.toUpperCase()} ]`;
+  const tagPart = ` ${tag} ─┐`;
+  const dashesCount = Math.max(1, WIDTH - titlePart.length - tagPart.length + 1); // +1: corners cancel, account for joining space
+  return `${titlePart} ${"─".repeat(dashesCount)}${tagPart}`;
+});
+Handlebars.registerHelper("cardBottom", () => "└" + "─".repeat(45) + "┘");
 
 function writeWidget(name: string, svg: string) {
   mkdirSync(WIDGETS_DIR, { recursive: true });
   writeFileSync(resolve(WIDGETS_DIR, `${name}.svg`), svg, "utf-8");
 }
 
-function todayIsoDate(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 function addDaysIso(base: Date, days: number): string {
   const d = new Date(base);
   d.setUTCDate(d.getUTCDate() + days);
@@ -104,7 +111,7 @@ async function renderAll(
   const readme = tpl({
     ...profile,
     refresh: {
-      now: todayIsoDate(),
+      now: now.toISOString().slice(0, 10),
       next: addDaysIso(now, 7),
     },
   });

@@ -27,26 +27,26 @@
 ## FEATURED
 
 ```
-┌─ [ STARKBASE ] ──── public ─┐
+┌─ [ STARKBASE ] ──────────────────── public ─┐
 │  backend-as-a-service for web3.
 │  baas, apis, dev tooling
-└─────────────────────────────────────────┘
+└─────────────────────────────────────────────┘
 ```
 → [Philotheephilix/starkbase](https://github.com/Philotheephilix/starkbase)
 
 ```
-┌─ [ AI-BROWSE-CONTROL ] ──── public ─┐
+┌─ [ AI-BROWSE-CONTROL ] ──────────── public ─┐
 │  ai steering a browser — agentic web automation.
 │  agents, browser
-└─────────────────────────────────────────┘
+└─────────────────────────────────────────────┘
 ```
 → [Philotheephilix/ai-browse-control](https://github.com/Philotheephilix/ai-browse-control)
 
 ```
-┌─ [ LITTLEBIGMOUSELINUX ] ─────── private ─┐
+┌─ [ LITTLEBIGMOUSELINUX ] ───────── private ─┐
 │  linux port of littlebigmouse in rust.
 │  rust, linux, tooling
-└─────────────────────────────────────────┘
+└─────────────────────────────────────────────┘
 ```
 
 
