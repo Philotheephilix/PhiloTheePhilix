@@ -1,0 +1,61 @@
+<!-- THIS FILE IS REGENERATED WEEKLY BY .github/workflows/refresh.yml — DO NOT HAND-EDIT -->
+
+<div align="center">
+
+<img src="assets/widgets/hero.svg" width="900" alt="philotheephilix" />
+
+</div>
+
+<table>
+  <tr>
+    <td><img src="assets/widgets/activity.svg" width="300" /></td>
+    <td><img src="assets/widgets/active-loops.svg" width="300" /></td>
+    <td><img src="assets/widgets/chains.svg" width="300" /></td>
+  </tr>
+  <tr>
+    <td><img src="assets/widgets/shipped-this-week.svg" width="300" /></td>
+    <td><img src="assets/widgets/uptime.svg" width="300" /></td>
+    <td><img src="assets/widgets/hackathon.svg" width="300" /></td>
+  </tr>
+  <tr>
+    <td><img src="assets/widgets/availability.svg" width="300" /></td>
+    <td><img src="assets/widgets/now-playing.svg" width="300" /></td>
+    <td><img src="assets/widgets/location.svg" width="300" /></td>
+  </tr>
+</table>
+
+## FEATURED
+
+{{#each featured}}
+```
+┌─ [ {{upper repo}} ] {{#if private}}─────── private ─┐{{else}}──── public ─┐{{/if}}
+│  {{blurb}}
+│  {{join tags ", "}}
+└─────────────────────────────────────────┘
+```
+{{#unless private}}
+→ [{{repo}}](https://github.com/{{repo}})
+{{/unless}}
+
+{{/each}}
+
+## CURRENTLY
+
+```
+CURRENTLY
+{{#each currently}}
+  {{glyph @index ../currently.length}} {{this}}
+{{/each}}
+```
+
+## SIGNATURE
+
+```
+─── ── ─
+  web       {{signature.web}}
+  gh        {{signature.github}}
+  mail      {{signature.email}}
+  linkedin  {{signature.linkedin}}
+
+last refresh: {{refresh.now}} · next: {{refresh.next}}
+```
