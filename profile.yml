@@ -1,0 +1,51 @@
+hero:
+  handle: "PHILOTHEEPHILIX"
+  subtitle: "i build the rails between ai agents and on-chain money"
+  location: "chennai"
+  year: 2026
+  tokens: [ETH, STRK, USDC]
+
+currently:
+  - "shipping ai agents at tenori labs"
+  - "building starkbase"
+  - "fucking around with linux"
+
+featured:
+  - repo: "Philotheephilix/starkbase"
+    blurb: "backend-as-a-service for web3."
+    tags: [baas, apis, "dev tooling"]
+    private: false
+  - repo: "Philotheephilix/ai-browse-control"
+    blurb: "ai steering a browser — agentic web automation."
+    tags: [agents, browser]
+    private: false
+  - repo: "Philotheephilix/LittleBigMouseLinux"
+    blurb: "linux port of littlebigmouse in rust."
+    tags: [rust, linux, tooling]
+    private: true
+
+availability:
+  accept:  "ai × web3 collabs"
+  maybe:   "paid freelance"
+  decline: "hiring offers"
+
+hackathon:
+  wins: 23
+  played: 40
+  win_ratio_display: "55%"
+
+lastfm:
+  username: ""
+
+location:
+  label: "CHENNAI · IST"
+  coords: { lat: 13.08, lon: 80.27 }
+
+signature:
+  web: "philotheephilix.in"
+  github: "@Philotheephilix"
+  email: "philosanjay5@gmail.com"
+  linkedin: "/in/philotheephilix"
+
+chains:
+  overrides: {}
