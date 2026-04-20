@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.env.*
+.superpowers/
+docs/superpowers/
+.claude/
+*.log
