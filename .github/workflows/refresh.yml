@@ -1,0 +1,39 @@
+name: Refresh profile
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"  # Mondays 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      - name: Render profile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+        run: npm run render
+
+      - name: Commit changes (if any)
+        run: |
+          git config user.name "philo-bot"
+          git config user.email "philo-bot@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain README.md assets/widgets)" ]]; then
+            git add README.md assets/widgets
+            git commit -m "chore: weekly refresh [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
