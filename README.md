@@ -65,7 +65,7 @@ CURRENTLY
 ─── ── ─
   web       philotheephilix.in
   gh        @Philotheephilix
-  mail      philosanjay5@gmail.com
+  mail      hello@philotheephilix.in
   linkedin  /in/philotheephilix
 
 last refresh: 2026-04-20 · next: 2026-04-27
