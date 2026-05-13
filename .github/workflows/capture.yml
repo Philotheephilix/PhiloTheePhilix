@@ -1,0 +1,39 @@
+name: diary capture
+
+on:
+  schedule:
+    - cron: "30 9 * * *"   # 09:30 UTC = 15:00 IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      - name: Capture diary entry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx tsx scripts/capture.ts
+
+      - name: Commit changes (if any)
+        run: |
+          git config user.name "philo-bot"
+          git config user.email "philo-bot@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain data/diary.json)" ]]; then
+            DATE=$(date -u +'%Y-%m-%d')
+            git add data/diary.json
+            git commit -m "chore: diary ${DATE} [skip ci]"
+            git push
+          else
+            echo "No diary changes to commit."
+          fi
