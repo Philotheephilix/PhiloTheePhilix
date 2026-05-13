@@ -1,4 +1,4 @@
-import { svgDocument, tspan, TUI_PALETTE } from "../lib/svg.js";
+import { svgDocument, tspan, TUI_PALETTE, animationStyle, pulseAnimate } from "../lib/svg.js";
 import type { ActiveLoop } from "../lib/github.js";
 
 export interface ActiveLoopsInput {
@@ -11,9 +11,21 @@ const COLOR = {
   iterating: TUI_PALETTE.amber,
   idle: TUI_PALETTE.dim,
 } as const;
+const PULSE_CLASS = {
+  shipping: "pulse-shipping",
+  iterating: "pulse-iter",
+  idle: null,
+} as const;
+
+function glyphElement(status: ActiveLoop["status"], x: number, y: number): string {
+  const cls = PULSE_CLASS[status];
+  const classAttr = cls ? ` class="${cls}"` : "";
+  return `<text x="${x}" y="${y}" fill="${COLOR[status]}" font-family="'JetBrains Mono', 'Menlo', monospace" font-size="13" font-weight="400"${classAttr} xml:space="preserve">${GLYPH[status]}</text>`;
+}
 
 export function renderActiveLoops(input: ActiveLoopsInput): string {
   const children: string[] = [
+    animationStyle([pulseAnimate()]),
     tspan("ACTIVE LOOPS", {
       x: 14,
       y: 22,
@@ -36,17 +48,8 @@ export function renderActiveLoops(input: ActiveLoopsInput): string {
 
   let y = 48;
   for (const loop of input.loops.slice(0, 5)) {
-    children.push(
-      tspan(GLYPH[loop.status], {
-        x: 14,
-        y,
-        fill: COLOR[loop.status],
-        size: 13,
-      }),
-    );
-    children.push(
-      tspan(loop.name, { x: 34, y, fill: TUI_PALETTE.white, size: 12 }),
-    );
+    children.push(glyphElement(loop.status, 14, y));
+    children.push(tspan(loop.name, { x: 34, y, fill: TUI_PALETTE.white, size: 12 }));
     children.push(
       tspan(loop.status, {
         x: 220,
