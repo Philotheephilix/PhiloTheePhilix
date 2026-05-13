@@ -1,4 +1,4 @@
-import { svgDocument, tspan, TUI_PALETTE } from "../lib/svg.js";
+import { svgDocument, tspan, TUI_PALETTE, radarPingCircle } from "../lib/svg.js";
 
 export interface LocationInput {
   label: string;
@@ -18,6 +18,9 @@ const MAP = [
   "             `──.──'               ",
 ].join("\n");
 
+const PIN_X = 127;
+const PIN_Y = 97;
+
 export function renderLocation(input: LocationInput): string {
   const lines = MAP.split("\n");
   const children: string[] = [
@@ -28,6 +31,9 @@ export function renderLocation(input: LocationInput): string {
     children.push(tspan(line, { x: 14, y, fill: TUI_PALETTE.cyan, size: 9 }));
     y += 11;
   }
+  children.push(
+    radarPingCircle({ cx: PIN_X, cy: PIN_Y, durationMs: 3000, stroke: TUI_PALETTE.green }),
+  );
   children.push(
     tspan(
       `LOC: ${input.coords.lat.toFixed(2)}°N ${input.coords.lon.toFixed(2)}°E · ${input.label}`,
