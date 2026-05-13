@@ -8,9 +8,9 @@ describe("loadProfile", () => {
     expect(p.hero.tokens).toEqual(["ETH", "STRK", "USDC"]);
     expect(p.currently).toHaveLength(3);
     expect(p.featured).toHaveLength(3);
-    expect(p.hackathon.wins).toBe(23);
-    expect(p.hackathon.played).toBe(40);
-    expect(p.availability.accept).toBe("ai × web3 collabs");
+    expect(p.hackathon.wins).toBe(24);
+    expect(p.hackathon.played).toBe(42);
+    expect(p.availability.accept).toBe("ai × web3 collabs · hiring offers");
     expect(p.lastfm.username).toBe("");
   });
 

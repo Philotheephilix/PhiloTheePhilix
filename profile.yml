@@ -25,14 +25,14 @@ featured:
     private: true
 
 availability:
-  accept:  "ai × web3 collabs"
+  accept:  "ai × web3 collabs · hiring offers"
   maybe:   "paid freelance"
-  decline: "hiring offers"
+  decline: "—"
 
 hackathon:
-  wins: 23
-  played: 40
-  win_ratio_display: "55%"
+  wins: 24
+  played: 42
+  win_ratio_display: "57%"
 
 lastfm:
   username: ""
