@@ -24,14 +24,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: npm run render
 
       - name: Commit changes (if any)
         run: |
           git config user.name "philo-bot"
           git config user.email "philo-bot@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain README.md assets/widgets)" ]]; then
-            git add README.md assets/widgets
+          if [[ -n "$(git status --porcelain README.md assets/widgets data)" ]]; then
+            git add README.md assets/widgets data
             git commit -m "chore: weekly refresh [skip ci]"
             git push
           else
