@@ -32,6 +32,10 @@ export interface Profile {
     email: string;
     linkedin: string;
   };
+  manifesto: {
+    seed_lines: string[];
+    fallback_pool: string[];
+  };
   chains: { overrides: Record<string, string[]> };
 }
 

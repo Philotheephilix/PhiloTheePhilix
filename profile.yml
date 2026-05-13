@@ -47,5 +47,19 @@ signature:
   email: "philosanjay5@gmail.com"
   linkedin: "/in/philotheephilix"
 
+manifesto:
+  seed_lines:
+    - "agents that own wallets"
+    - "rails before runtime"
+    - "compile to intent, deploy to chain"
+    - "the model is the api"
+    - "every dev tool wants to be a runtime"
+  fallback_pool:
+    - "agents are the new apis"
+    - "every dev tool wants to be a runtime"
+    - "ship the rail, the train will come"
+    - "compile to intent, deploy to chain"
+    - "the wallet is the user"
+
 chains:
   overrides: {}

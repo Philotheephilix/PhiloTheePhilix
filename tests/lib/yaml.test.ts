@@ -22,3 +22,13 @@ describe("loadProfile", () => {
     expect(littleBigMouse?.private).toBe(true);
   });
 });
+
+describe("profile.manifesto", () => {
+  it("loads manifesto.seed_lines and manifesto.fallback_pool", () => {
+    const p = loadProfile();
+    expect(Array.isArray(p.manifesto.seed_lines)).toBe(true);
+    expect(p.manifesto.seed_lines.length).toBeGreaterThan(0);
+    expect(Array.isArray(p.manifesto.fallback_pool)).toBe(true);
+    expect(p.manifesto.fallback_pool.length).toBeGreaterThan(0);
+  });
+});
