@@ -26,6 +26,11 @@ import { renderLocation } from "./widgets/location.js";
 import { renderFeatured } from "./widgets/featured.js";
 import { renderCurrently } from "./widgets/currently.js";
 import { renderSignature } from "./widgets/signature.js";
+import {
+  generateManifesto,
+  createOpenAIGenerator,
+  type ManifestoContext,
+} from "./lib/openai.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,6 +39,8 @@ const WIDGETS_DIR = resolve(ROOT, "assets/widgets");
 const TEMPLATE_PATH = resolve(ROOT, "templates/README.hbs");
 const README_PATH = resolve(ROOT, "README.md");
 const GITHUB_USER = "Philotheephilix";
+const DATA_DIR = resolve(ROOT, "data");
+const MANIFESTO_PATH = resolve(DATA_DIR, "manifesto.txt");
 
 Handlebars.registerHelper("upper", (s: string) =>
   String(s).split("/").pop()!.toUpperCase(),
@@ -108,7 +115,8 @@ async function renderAll(
   const top = parseTopWeeklyTrack(lastfm.top, profile.lastfm.username);
   writeWidget("now-playing", renderNowPlaying({ recent, top }));
 
-  writeWidget("hero", renderHero(profile.hero));
+  const manifesto = await resolveManifesto(profile, ghData, now);
+  writeWidget("hero", renderHero({ ...profile.hero, manifesto }));
 
   writeWidget("featured", renderFeatured({ items: profile.featured }));
   writeWidget("currently", renderCurrently({ items: profile.currently }));
@@ -129,7 +137,41 @@ async function renderAll(
   writeFileSync(README_PATH, readme, "utf-8");
 }
 
+async function resolveManifesto(
+  profile: Profile,
+  ghData: FetchedGitHubData,
+  now: Date,
+): Promise<string> {
+  const commitThemes: string[] = [];
+  for (const e of ghData.events) {
+    if (e.type === "PushEvent" && e.payload.commits) {
+      for (const c of e.payload.commits) {
+        const msg = c.message.split("\n")[0]?.trim();
+        if (msg) commitThemes.push(msg);
+      }
+    }
+    if (commitThemes.length >= 10) break;
+  }
+  const deduped = Array.from(new Set(commitThemes)).slice(0, 5);
+  const ctx: ManifestoContext = {
+    identity: profile.hero.subtitle,
+    currently: profile.currently,
+    recentCommitThemes: deduped,
+    seedLines: profile.manifesto.seed_lines,
+    fallbackPool: profile.manifesto.fallback_pool,
+    now,
+  };
+  const gen = process.env.OPENAI_API_KEY
+    ? createOpenAIGenerator()
+    : async () => "";
+  const line = await generateManifesto(ctx, gen);
+  mkdirSync(DATA_DIR, { recursive: true });
+  writeFileSync(MANIFESTO_PATH, line + "\n", "utf-8");
+  return line;
+}
+
 export async function renderFromFixtures() {
+  process.env.OPENAI_API_KEY = "";
   const profile = loadProfile();
   const now = new Date();
   const repos = [

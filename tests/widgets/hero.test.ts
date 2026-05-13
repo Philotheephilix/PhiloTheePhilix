@@ -63,3 +63,21 @@ describe("hero animation", () => {
     expect(svg).toMatch(/<animate[^>]*attributeName="width"/);
   });
 });
+
+describe("hero manifesto line", () => {
+  const BASE = {
+    handle: "PHILOTHEEPHILIX",
+    subtitle: "i build the rails between ai agents and on-chain money",
+    location: "chennai",
+    year: 2026,
+    tokens: ["ETH", "STRK", "USDC"],
+  };
+  it("renders the manifesto line with arrow prefix when provided", () => {
+    const svg = renderHero({ ...BASE, manifesto: "rails before runtime" });
+    expect(svg).toContain("▸ rails before runtime");
+  });
+  it("does not render the line when manifesto is empty/undefined", () => {
+    const svg = renderHero({ ...BASE });
+    expect(svg).not.toContain("▸");
+  });
+});

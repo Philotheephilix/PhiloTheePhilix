@@ -13,6 +13,7 @@ export interface HeroInput {
   location: string;
   year: number;
   tokens: string[];
+  manifesto?: string;
 }
 
 const LINE_HEIGHT = 18;
@@ -63,6 +64,18 @@ export function renderHero(input: HeroInput): string {
     ),
   );
   y += LINE_HEIGHT + 12;
+
+  if (input.manifesto && input.manifesto.trim().length > 0) {
+    children.push(
+      tspan(`▸ ${input.manifesto}`, {
+        x: PADDING_X,
+        y,
+        fill: TUI_PALETTE.dim,
+        size: 12,
+      }),
+    );
+    y += LINE_HEIGHT + 4;
+  }
 
   const tokenText = input.tokens.map((t) => `[ ${t} ]`).join("  ");
   children.push(
