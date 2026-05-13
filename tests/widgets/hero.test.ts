@@ -40,3 +40,26 @@ describe("renderHero", () => {
     expect(svg).toContain("[ USDC ]");
   });
 });
+
+describe("hero animation", () => {
+  const HERO_INPUT = {
+    handle: "PHILOTHEEPHILIX",
+    subtitle: "i build the rails between ai agents and on-chain money",
+    location: "chennai",
+    year: 2026,
+    tokens: ["ETH", "STRK", "USDC"],
+  };
+  it("contains a <style> block with cursor blink keyframes", () => {
+    const svg = renderHero(HERO_INPUT);
+    expect(svg).toMatch(/<style>[\s\S]*@keyframes blink[\s\S]*<\/style>/);
+  });
+  it("contains the cursor element with class=\"cursor\"", () => {
+    const svg = renderHero(HERO_INPUT);
+    expect(svg).toMatch(/<text[^>]*class="cursor"/);
+  });
+  it("contains a clipPath reveal animation for the subtitle", () => {
+    const svg = renderHero(HERO_INPUT);
+    expect(svg).toContain('<clipPath');
+    expect(svg).toMatch(/<animate[^>]*attributeName="width"/);
+  });
+});
