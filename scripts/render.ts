@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import Handlebars from "handlebars";
@@ -26,8 +26,6 @@ import { renderLocation } from "./widgets/location.js";
 import { renderFeatured } from "./widgets/featured.js";
 import { renderCurrently } from "./widgets/currently.js";
 import { renderSignature } from "./widgets/signature.js";
-import { renderDiary } from "./widgets/diary.js";
-import { toISTDate, type DiaryFile, type DiaryEntry } from "./lib/diary.js";
 import {
   generateManifesto,
   createOpenAIGenerator,
@@ -43,7 +41,6 @@ const README_PATH = resolve(ROOT, "README.md");
 const GITHUB_USER = "Philotheephilix";
 const DATA_DIR = resolve(ROOT, "data");
 const MANIFESTO_PATH = resolve(DATA_DIR, "manifesto.txt");
-const DIARY_PATH = resolve(DATA_DIR, "diary.json");
 
 Handlebars.registerHelper("upper", (s: string) =>
   String(s).split("/").pop()!.toUpperCase(),
@@ -82,9 +79,6 @@ async function renderAll(
   lastfm: { recent: unknown; top: unknown },
 ) {
   const now = new Date();
-
-  const diaryEntries = loadDiary();
-  writeWidget("diary", renderDiary({ entries: diaryEntries, today: toISTDate(now) }));
 
   const daily = parseContributionCalendar(ghData.calendar, 30, now);
   writeWidget("activity", renderActivity({ daily }));
@@ -141,16 +135,6 @@ async function renderAll(
     },
   });
   writeFileSync(README_PATH, readme, "utf-8");
-}
-
-function loadDiary(): DiaryEntry[] {
-  if (!existsSync(DIARY_PATH)) return [];
-  try {
-    const file = JSON.parse(readFileSync(DIARY_PATH, "utf-8")) as DiaryFile;
-    return Array.isArray(file.entries) ? file.entries : [];
-  } catch {
-    return [];
-  }
 }
 
 async function resolveManifesto(

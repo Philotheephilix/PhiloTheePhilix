@@ -10,7 +10,7 @@ describe("render (fixture mode)", () => {
     await renderFromFixtures();
   });
 
-  it("writes all 14 widget SVGs", () => {
+  it("writes all 13 widget SVGs", () => {
     const names = [
       "hero",
       "activity",
@@ -25,7 +25,6 @@ describe("render (fixture mode)", () => {
       "featured",
       "currently",
       "signature",
-      "diary",
     ];
     for (const n of names) {
       expect(existsSync(resolve(ROOT, `assets/widgets/${n}.svg`))).toBe(true);
@@ -39,8 +38,6 @@ describe("render (fixture mode)", () => {
     expect(readme).toContain("assets/widgets/featured.svg");
     expect(readme).toContain("assets/widgets/currently.svg");
     expect(readme).toContain("assets/widgets/signature.svg");
-    expect(readme).toContain("assets/widgets/diary.svg".replace("diary","featured")); // sanity
-    expect(readme).toContain("assets/widgets/diary.svg");
     expect(readme).toContain("https://github.com/Philotheephilix?tab=repositories");
     expect(readme).toContain("https://github.com/Philotheephilix");
     expect(readme).toContain("https://philotheephilix.in");

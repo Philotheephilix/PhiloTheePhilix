@@ -28,9 +28,3 @@
     <td><a href="https://philotheephilix.in"><img src="assets/widgets/signature.svg" width="300" alt="signature" /></a></td>
   </tr>
 </table>
-
-<div align="center">
-
-<img src="assets/widgets/diary.svg" width="900" alt="diary" />
-
-</div>
