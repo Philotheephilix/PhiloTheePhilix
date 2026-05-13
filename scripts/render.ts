@@ -11,7 +11,6 @@ import {
   parseUserStats,
   type FetchedGitHubData,
 } from "./lib/github.js";
-import { fetchLastfmData, parseRecentTrack, parseTopWeeklyTrack } from "./lib/lastfm.js";
 import { computeChainFreshness } from "./lib/chain-map.js";
 import { renderHero } from "./widgets/hero.js";
 import { renderActivity } from "./widgets/activity.js";
@@ -21,7 +20,7 @@ import { renderShippedThisWeek } from "./widgets/shipped-this-week.js";
 import { renderUptime } from "./widgets/uptime.js";
 import { renderHackathon } from "./widgets/hackathon.js";
 import { renderAvailability } from "./widgets/availability.js";
-import { renderNowPlaying } from "./widgets/now-playing.js";
+import { renderSkills } from "./widgets/skills.js";
 import { renderLocation } from "./widgets/location.js";
 import { renderFeatured } from "./widgets/featured.js";
 import { renderCurrently } from "./widgets/currently.js";
@@ -76,7 +75,6 @@ function addDaysIso(base: Date, days: number): string {
 async function renderAll(
   profile: Profile,
   ghData: FetchedGitHubData,
-  lastfm: { recent: unknown; top: unknown },
 ) {
   const now = new Date();
 
@@ -111,9 +109,7 @@ async function renderAll(
   writeWidget("availability", renderAvailability(profile.availability));
   writeWidget("location", renderLocation(profile.location));
 
-  const recent = parseRecentTrack(lastfm.recent, profile.lastfm.username);
-  const top = parseTopWeeklyTrack(lastfm.top, profile.lastfm.username);
-  writeWidget("now-playing", renderNowPlaying({ recent, top }));
+  writeWidget("skills", renderSkills({ repo: "Philotheephilix/.claude" }));
 
   const manifesto = await resolveManifesto(profile, ghData, now);
   writeWidget("hero", renderHero({ ...profile.hero, manifesto }));
@@ -193,14 +189,13 @@ export async function renderFromFixtures() {
     calendar: { weeks: [] },
     events: [],
   };
-  await renderAll(profile, ghData, { recent: null, top: null });
+  await renderAll(profile, ghData);
 }
 
 export async function renderLive() {
   const profile = loadProfile();
   const ghData = await fetchGitHubData(GITHUB_USER);
-  const lastfm = await fetchLastfmData(profile.lastfm.username);
-  await renderAll(profile, ghData, lastfm);
+  await renderAll(profile, ghData);
 }
 
 const isMain =

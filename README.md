@@ -19,7 +19,7 @@
   </tr>
   <tr>
     <td><img src="assets/widgets/availability.svg" width="300" /></td>
-    <td><img src="assets/widgets/now-playing.svg" width="300" /></td>
+    <td><a href="https://github.com/Philotheephilix/.claude"><img src="assets/widgets/skills.svg" width="300" alt="skills" /></a></td>
     <td><img src="assets/widgets/location.svg" width="300" /></td>
   </tr>
   <tr>

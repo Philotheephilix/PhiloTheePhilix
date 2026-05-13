@@ -20,7 +20,7 @@ describe("render (fixture mode)", () => {
       "uptime",
       "hackathon",
       "availability",
-      "now-playing",
+      "skills",
       "location",
       "featured",
       "currently",
