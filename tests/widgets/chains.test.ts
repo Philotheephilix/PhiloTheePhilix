@@ -20,3 +20,20 @@ describe("renderChains", () => {
     expect(svg).toContain("rgba(255,255,255,0.5)");
   });
 });
+
+describe("chains animation", () => {
+  it("contains hue-drift keyframes in <style>", () => {
+    const svg = renderChains({ freshness: { EVM: 1, STK: 30 } });
+    expect(svg).toMatch(/<style>[\s\S]*@keyframes hue-drift[\s\S]*<\/style>/);
+  });
+  it("applies class=\"hue-drift\" to the freshest chain only", () => {
+    const svg = renderChains({ freshness: { EVM: 1, STK: 30, XLM: 90 } });
+    const hueMatches = svg.match(/class="hue-drift"/g) ?? [];
+    expect(hueMatches).toHaveLength(1);
+    expect(svg).toMatch(/class="hue-drift"[^>]*>\[ EVM \]/);
+  });
+  it("does not apply hue-drift if all chains are dormant (Infinity)", () => {
+    const svg = renderChains({ freshness: {} });
+    expect(svg).not.toMatch(/class="hue-drift"/);
+  });
+});

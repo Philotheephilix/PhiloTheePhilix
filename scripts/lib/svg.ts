@@ -68,3 +68,60 @@ export function tspan(text: string, opts: TextOptions): string {
     .replace(/>/g, "&gt;");
   return `<text x="${opts.x}" y="${opts.y}" fill="${fill}" font-family="'JetBrains Mono', 'Menlo', monospace" font-size="${size}" font-weight="${weight}" letter-spacing="${ls}" xml:space="preserve">${safe}</text>`;
 }
+
+export function animationStyle(keyframes: string[]): string {
+  return `<style>${keyframes.join("")}</style>`;
+}
+
+export interface CursorSpanOptions {
+  x: number;
+  y: number;
+  fill: string;
+  size?: number;
+}
+
+export function cursorSpan(opts: CursorSpanOptions): string {
+  const size = opts.size ?? 13;
+  return `<text x="${opts.x}" y="${opts.y}" fill="${opts.fill}" font-family="'JetBrains Mono', 'Menlo', monospace" font-size="${size}" font-weight="600" class="cursor" xml:space="preserve">_</text>`;
+}
+
+export interface ClipPathRevealOptions {
+  id: string;
+  width: number;
+  durationMs: number;
+  beginMs?: number;
+}
+
+export function clipPathReveal(opts: ClipPathRevealOptions): string {
+  const begin = opts.beginMs ? `${opts.beginMs / 1000}s` : "0s";
+  return `<clipPath id="${opts.id}"><rect x="0" y="0" height="100%" width="0"><animate attributeName="width" from="0" to="${opts.width}" begin="${begin}" dur="${opts.durationMs / 1000}s" fill="freeze"/></rect></clipPath>`;
+}
+
+export function pulseAnimate(): string {
+  return [
+    "@keyframes pulse-shipping{0%,100%{opacity:0.4}50%{opacity:1}}",
+    "@keyframes pulse-iter{0%,100%{opacity:0.5}50%{opacity:0.9}}",
+    ".pulse-shipping{animation:pulse-shipping 2s ease-in-out infinite}",
+    ".pulse-iter{animation:pulse-iter 3s ease-in-out infinite}",
+  ].join("");
+}
+
+export function hueDriftAnimate(fromColor: string, toColor: string): string {
+  return [
+    `@keyframes hue-drift{0%,100%{fill:${fromColor}}50%{fill:${toColor}}}`,
+    `.hue-drift{animation:hue-drift 6s ease-in-out infinite}`,
+  ].join("");
+}
+
+export interface RadarPingOptions {
+  cx: number;
+  cy: number;
+  durationMs: number;
+  stroke?: string;
+}
+
+export function radarPingCircle(opts: RadarPingOptions): string {
+  const stroke = opts.stroke ?? TUI_PALETTE.green;
+  const dur = `${opts.durationMs / 1000}s`;
+  return `<circle cx="${opts.cx}" cy="${opts.cy}" r="2" fill="none" stroke="${stroke}" stroke-width="1.5"><animate attributeName="r" from="2" to="14" dur="${dur}" repeatCount="indefinite"/><animate attributeName="opacity" from="1" to="0" dur="${dur}" repeatCount="indefinite"/></circle>`;
+}

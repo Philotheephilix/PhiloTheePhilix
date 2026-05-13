@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import Handlebars from "handlebars";
@@ -23,6 +23,16 @@ import { renderHackathon } from "./widgets/hackathon.js";
 import { renderAvailability } from "./widgets/availability.js";
 import { renderNowPlaying } from "./widgets/now-playing.js";
 import { renderLocation } from "./widgets/location.js";
+import { renderFeatured } from "./widgets/featured.js";
+import { renderCurrently } from "./widgets/currently.js";
+import { renderSignature } from "./widgets/signature.js";
+import { renderDiary } from "./widgets/diary.js";
+import { toISTDate, type DiaryFile, type DiaryEntry } from "./lib/diary.js";
+import {
+  generateManifesto,
+  createOpenAIGenerator,
+  type ManifestoContext,
+} from "./lib/openai.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +41,9 @@ const WIDGETS_DIR = resolve(ROOT, "assets/widgets");
 const TEMPLATE_PATH = resolve(ROOT, "templates/README.hbs");
 const README_PATH = resolve(ROOT, "README.md");
 const GITHUB_USER = "Philotheephilix";
+const DATA_DIR = resolve(ROOT, "data");
+const MANIFESTO_PATH = resolve(DATA_DIR, "manifesto.txt");
+const DIARY_PATH = resolve(DATA_DIR, "diary.json");
 
 Handlebars.registerHelper("upper", (s: string) =>
   String(s).split("/").pop()!.toUpperCase(),
@@ -70,6 +83,9 @@ async function renderAll(
 ) {
   const now = new Date();
 
+  const diaryEntries = loadDiary();
+  writeWidget("diary", renderDiary({ entries: diaryEntries, today: toISTDate(now) }));
+
   const daily = parseContributionCalendar(ghData.calendar, 30, now);
   writeWidget("activity", renderActivity({ daily }));
 
@@ -105,7 +121,16 @@ async function renderAll(
   const top = parseTopWeeklyTrack(lastfm.top, profile.lastfm.username);
   writeWidget("now-playing", renderNowPlaying({ recent, top }));
 
-  writeWidget("hero", renderHero(profile.hero));
+  const manifesto = await resolveManifesto(profile, ghData, now);
+  writeWidget("hero", renderHero({ ...profile.hero, manifesto }));
+
+  writeWidget("featured", renderFeatured({ items: profile.featured }));
+  writeWidget("currently", renderCurrently({ items: profile.currently }));
+  writeWidget("signature", renderSignature({
+    ...profile.signature,
+    refreshNow: now.toISOString().slice(0, 10),
+    refreshNext: addDaysIso(now, 7),
+  }));
 
   const tpl = Handlebars.compile(readFileSync(TEMPLATE_PATH, "utf-8"));
   const readme = tpl({
@@ -118,7 +143,51 @@ async function renderAll(
   writeFileSync(README_PATH, readme, "utf-8");
 }
 
+function loadDiary(): DiaryEntry[] {
+  if (!existsSync(DIARY_PATH)) return [];
+  try {
+    const file = JSON.parse(readFileSync(DIARY_PATH, "utf-8")) as DiaryFile;
+    return Array.isArray(file.entries) ? file.entries : [];
+  } catch {
+    return [];
+  }
+}
+
+async function resolveManifesto(
+  profile: Profile,
+  ghData: FetchedGitHubData,
+  now: Date,
+): Promise<string> {
+  const commitThemes: string[] = [];
+  for (const e of ghData.events) {
+    if (e.type === "PushEvent" && e.payload.commits) {
+      for (const c of e.payload.commits) {
+        const msg = c.message.split("\n")[0]?.trim();
+        if (msg) commitThemes.push(msg);
+      }
+    }
+    if (commitThemes.length >= 10) break;
+  }
+  const deduped = Array.from(new Set(commitThemes)).slice(0, 5);
+  const ctx: ManifestoContext = {
+    identity: profile.hero.subtitle,
+    currently: profile.currently,
+    recentCommitThemes: deduped,
+    seedLines: profile.manifesto.seed_lines,
+    fallbackPool: profile.manifesto.fallback_pool,
+    now,
+  };
+  const gen = process.env.OPENAI_API_KEY
+    ? createOpenAIGenerator()
+    : async () => "";
+  const line = await generateManifesto(ctx, gen);
+  mkdirSync(DATA_DIR, { recursive: true });
+  writeFileSync(MANIFESTO_PATH, line + "\n", "utf-8");
+  return line;
+}
+
 export async function renderFromFixtures() {
+  process.env.OPENAI_API_KEY = "";
   const profile = loadProfile();
   const now = new Date();
   const repos = [

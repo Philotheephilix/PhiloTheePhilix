@@ -28,6 +28,14 @@ export function renderActivity(input: ActivityInput): string {
 
   const spark = sparkline(input.daily);
   const total = input.daily.reduce((a, b) => a + b, 0);
+  const sparkWidth = 280;
+  const sparkLine = tspan(spark, {
+    x: 14,
+    y: 56,
+    fill: TUI_PALETTE.green,
+    size: 18,
+    letterSpacing: 1,
+  });
   return svgDocument({
     width: 300,
     height: 90,
@@ -46,13 +54,8 @@ export function renderActivity(input: ActivityInput): string {
         size: 10,
         letterSpacing: 1.8,
       }) +
-      tspan(spark, {
-        x: 14,
-        y: 56,
-        fill: TUI_PALETTE.green,
-        size: 18,
-        letterSpacing: 1,
-      }) +
+      `<clipPath id="activity-reveal"><rect x="14" y="36" height="28" width="0"><animate attributeName="width" from="0" to="${sparkWidth}" dur="0.9s" fill="freeze"/></rect></clipPath>` +
+      `<g clip-path="url(#activity-reveal)">${sparkLine}</g>` +
       tspan(`commits / day · ${total} total`, {
         x: 14,
         y: 76,

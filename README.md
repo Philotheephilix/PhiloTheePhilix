@@ -22,51 +22,15 @@
     <td><img src="assets/widgets/now-playing.svg" width="300" /></td>
     <td><img src="assets/widgets/location.svg" width="300" /></td>
   </tr>
+  <tr>
+    <td><a href="https://github.com/Philotheephilix?tab=repositories"><img src="assets/widgets/featured.svg" width="300" alt="featured" /></a></td>
+    <td><a href="https://github.com/Philotheephilix"><img src="assets/widgets/currently.svg" width="300" alt="currently" /></a></td>
+    <td><a href="https://philotheephilix.in"><img src="assets/widgets/signature.svg" width="300" alt="signature" /></a></td>
+  </tr>
 </table>
 
-## FEATURED
+<div align="center">
 
-```
-┌─ [ STARKBASE ] ──────────────────── public ─┐
-│  backend-as-a-service for web3.
-│  baas, apis, dev tooling
-└─────────────────────────────────────────────┘
-```
-→ [Philotheephilix/starkbase](https://github.com/Philotheephilix/starkbase)
+<img src="assets/widgets/diary.svg" width="900" alt="diary" />
 
-```
-┌─ [ AI-BROWSE-CONTROL ] ──────────── public ─┐
-│  ai steering a browser — agentic web automation.
-│  agents, browser
-└─────────────────────────────────────────────┘
-```
-→ [Philotheephilix/ai-browse-control](https://github.com/Philotheephilix/ai-browse-control)
-
-```
-┌─ [ LITTLEBIGMOUSELINUX ] ───────── private ─┐
-│  linux port of littlebigmouse in rust.
-│  rust, linux, tooling
-└─────────────────────────────────────────────┘
-```
-
-
-## CURRENTLY
-
-```
-CURRENTLY
-  ├─ shipping ai agents at tenori labs
-  ├─ building starkbase
-  └─ fucking around with linux
-```
-
-## SIGNATURE
-
-```
-─── ── ─
-  web       philotheephilix.in
-  gh        @Philotheephilix
-  mail      philosanjay5@gmail.com
-  linkedin  /in/philotheephilix
-
-last refresh: 2026-05-11 · next: 2026-05-18
-```
+</div>

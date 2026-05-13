@@ -21,3 +21,28 @@ describe("renderActiveLoops", () => {
     expect(svg).toContain("no active loops this week");
   });
 });
+
+describe("active-loops animation", () => {
+  const loops = [
+    { name: "starkbase", status: "shipping" as const, pushedAt: new Date() },
+    { name: "ai-browse", status: "iterating" as const, pushedAt: new Date() },
+    { name: "old-repo",  status: "idle"      as const, pushedAt: new Date() },
+  ];
+  it("includes pulse keyframes in <style>", () => {
+    const svg = renderActiveLoops({ loops });
+    expect(svg).toMatch(/<style>[\s\S]*pulse-shipping[\s\S]*<\/style>/);
+    expect(svg).toContain("pulse-iter");
+  });
+  it("applies pulse-shipping class to shipping glyph", () => {
+    const svg = renderActiveLoops({ loops });
+    expect(svg).toMatch(/class="pulse-shipping"[^>]*>●/);
+  });
+  it("applies pulse-iter class to iterating glyph", () => {
+    const svg = renderActiveLoops({ loops });
+    expect(svg).toMatch(/class="pulse-iter"[^>]*>◐/);
+  });
+  it("does NOT apply pulse class to idle glyph", () => {
+    const svg = renderActiveLoops({ loops });
+    expect(svg).not.toMatch(/class="pulse-[a-z]+"[^>]*>○/);
+  });
+});

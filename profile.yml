@@ -25,14 +25,14 @@ featured:
     private: true
 
 availability:
-  accept:  "ai × web3 collabs"
+  accept:  "ai × web3 collabs · hiring offers"
   maybe:   "paid freelance"
-  decline: "hiring offers"
+  decline: "—"
 
 hackathon:
-  wins: 23
-  played: 40
-  win_ratio_display: "55%"
+  wins: 24
+  played: 42
+  win_ratio_display: "57%"
 
 lastfm:
   username: ""
@@ -46,6 +46,20 @@ signature:
   github: "@Philotheephilix"
   email: "philosanjay5@gmail.com"
   linkedin: "/in/philotheephilix"
+
+manifesto:
+  seed_lines:
+    - "agents that own wallets"
+    - "rails before runtime"
+    - "compile to intent, deploy to chain"
+    - "the model is the api"
+    - "every dev tool wants to be a runtime"
+  fallback_pool:
+    - "agents are the new apis"
+    - "every dev tool wants to be a runtime"
+    - "ship the rail, the train will come"
+    - "compile to intent, deploy to chain"
+    - "the wallet is the user"
 
 chains:
   overrides: {}

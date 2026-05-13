@@ -1,15 +1,15 @@
-name: Refresh profile
+name: diary capture
 
 on:
   schedule:
-    - cron: "0 0 * * 1"  # Mondays 00:00 UTC
+    - cron: "30 9 * * *"   # 09:30 UTC = 15:00 IST
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  refresh:
+  capture:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,21 +20,20 @@ jobs:
 
       - run: npm ci
 
-      - name: Render profile
+      - name: Capture diary entry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: npm run render
+        run: npx tsx scripts/capture.ts
 
       - name: Commit changes (if any)
         run: |
           git config user.name "philo-bot"
           git config user.email "philo-bot@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain README.md assets/widgets data)" ]]; then
-            git add README.md assets/widgets data
-            git commit -m "chore: weekly refresh [skip ci]"
+          if [[ -n "$(git status --porcelain data/diary.json)" ]]; then
+            DATE=$(date -u +'%Y-%m-%d')
+            git add data/diary.json
+            git commit -m "chore: diary ${DATE} [skip ci]"
             git push
           else
-            echo "No changes to commit."
+            echo "No diary changes to commit."
           fi

@@ -22,40 +22,15 @@
     <td><img src="assets/widgets/now-playing.svg" width="300" /></td>
     <td><img src="assets/widgets/location.svg" width="300" /></td>
   </tr>
+  <tr>
+    <td><a href="https://github.com/Philotheephilix?tab=repositories"><img src="assets/widgets/featured.svg" width="300" alt="featured" /></a></td>
+    <td><a href="https://github.com/Philotheephilix"><img src="assets/widgets/currently.svg" width="300" alt="currently" /></a></td>
+    <td><a href="https://philotheephilix.in"><img src="assets/widgets/signature.svg" width="300" alt="signature" /></a></td>
+  </tr>
 </table>
 
-## FEATURED
+<div align="center">
 
-{{#each featured}}
-```
-{{{cardTop repo private}}}
-│  {{blurb}}
-│  {{join tags ", "}}
-{{{cardBottom}}}
-```
-{{#unless private}}
-→ [{{repo}}](https://github.com/{{repo}})
-{{/unless}}
+<img src="assets/widgets/diary.svg" width="900" alt="diary" />
 
-{{/each}}
-
-## CURRENTLY
-
-```
-CURRENTLY
-{{#each currently}}
-  {{glyph @index ../currently.length}} {{this}}
-{{/each}}
-```
-
-## SIGNATURE
-
-```
-─── ── ─
-  web       {{signature.web}}
-  gh        {{signature.github}}
-  mail      {{signature.email}}
-  linkedin  {{signature.linkedin}}
-
-last refresh: {{refresh.now}} · next: {{refresh.next}}
-```
+</div>

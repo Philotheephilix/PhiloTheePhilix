@@ -1,5 +1,11 @@
 import { renderBanner } from "../lib/figlet.js";
-import { svgDocument, tspan, TUI_PALETTE } from "../lib/svg.js";
+import {
+  svgDocument,
+  tspan,
+  TUI_PALETTE,
+  animationStyle,
+  cursorSpan,
+} from "../lib/svg.js";
 
 export interface HeroInput {
   handle: string;
@@ -7,6 +13,7 @@ export interface HeroInput {
   location: string;
   year: number;
   tokens: string[];
+  manifesto?: string;
 }
 
 const LINE_HEIGHT = 18;
@@ -18,6 +25,13 @@ export function renderHero(input: HeroInput): string {
   const banner = renderBanner(input.handle, { maxCols: 80 });
   const bannerLines = banner.split("\n");
   const children: string[] = [`<title>${input.handle}</title>`];
+
+  children.push(
+    animationStyle([
+      "@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}",
+      ".cursor{animation:blink 1s steps(1) infinite}",
+    ]),
+  );
 
   let y = PADDING_Y + LINE_HEIGHT;
   for (const line of bannerLines) {
@@ -35,14 +49,13 @@ export function renderHero(input: HeroInput): string {
 
   y += 14;
 
-  children.push(
-    tspan(`// ${input.subtitle}`, {
-      x: PADDING_X,
-      y,
-      fill: TUI_PALETTE.white,
-      size: 13,
-    }),
-  );
+  const subtitleText = `// ${input.subtitle}`;
+  const subtitleWidth = subtitleText.length * 7.5;
+  children.push(`<clipPath id="hero-sub-reveal"><rect x="${PADDING_X}" y="${y - LINE_HEIGHT}" height="${LINE_HEIGHT * 1.5}" width="0"><animate attributeName="width" from="0" to="${subtitleWidth}" dur="1.2s" begin="0.1s" fill="freeze"/></rect></clipPath>`);
+  children.push(`<g clip-path="url(#hero-sub-reveal)">${tspan(subtitleText, { x: PADDING_X, y, fill: TUI_PALETTE.white, size: 13 })}</g>`);
+  const subtitleEndX = PADDING_X + subtitleWidth;
+  children.push(cursorSpan({ x: subtitleEndX + 2, y, fill: TUI_PALETTE.white, size: 13 }));
+
   y += LINE_HEIGHT;
   children.push(
     tspan(
@@ -51,6 +64,18 @@ export function renderHero(input: HeroInput): string {
     ),
   );
   y += LINE_HEIGHT + 12;
+
+  if (input.manifesto && input.manifesto.trim().length > 0) {
+    children.push(
+      tspan(`▸ ${input.manifesto}`, {
+        x: PADDING_X,
+        y,
+        fill: TUI_PALETTE.dim,
+        size: 12,
+      }),
+    );
+    y += LINE_HEIGHT + 4;
+  }
 
   const tokenText = input.tokens.map((t) => `[ ${t} ]`).join("  ");
   children.push(

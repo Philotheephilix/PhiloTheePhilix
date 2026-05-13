@@ -8,9 +8,9 @@ describe("loadProfile", () => {
     expect(p.hero.tokens).toEqual(["ETH", "STRK", "USDC"]);
     expect(p.currently).toHaveLength(3);
     expect(p.featured).toHaveLength(3);
-    expect(p.hackathon.wins).toBe(23);
-    expect(p.hackathon.played).toBe(40);
-    expect(p.availability.accept).toBe("ai × web3 collabs");
+    expect(p.hackathon.wins).toBe(24);
+    expect(p.hackathon.played).toBe(42);
+    expect(p.availability.accept).toBe("ai × web3 collabs · hiring offers");
     expect(p.lastfm.username).toBe("");
   });
 
@@ -20,5 +20,15 @@ describe("loadProfile", () => {
       f.repo.endsWith("LittleBigMouseLinux"),
     );
     expect(littleBigMouse?.private).toBe(true);
+  });
+});
+
+describe("profile.manifesto", () => {
+  it("loads manifesto.seed_lines and manifesto.fallback_pool", () => {
+    const p = loadProfile();
+    expect(Array.isArray(p.manifesto.seed_lines)).toBe(true);
+    expect(p.manifesto.seed_lines.length).toBeGreaterThan(0);
+    expect(Array.isArray(p.manifesto.fallback_pool)).toBe(true);
+    expect(p.manifesto.fallback_pool.length).toBeGreaterThan(0);
   });
 });
