@@ -23,6 +23,9 @@ import { renderHackathon } from "./widgets/hackathon.js";
 import { renderAvailability } from "./widgets/availability.js";
 import { renderNowPlaying } from "./widgets/now-playing.js";
 import { renderLocation } from "./widgets/location.js";
+import { renderFeatured } from "./widgets/featured.js";
+import { renderCurrently } from "./widgets/currently.js";
+import { renderSignature } from "./widgets/signature.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -106,6 +109,14 @@ async function renderAll(
   writeWidget("now-playing", renderNowPlaying({ recent, top }));
 
   writeWidget("hero", renderHero(profile.hero));
+
+  writeWidget("featured", renderFeatured({ items: profile.featured }));
+  writeWidget("currently", renderCurrently({ items: profile.currently }));
+  writeWidget("signature", renderSignature({
+    ...profile.signature,
+    refreshNow: now.toISOString().slice(0, 10),
+    refreshNext: addDaysIso(now, 7),
+  }));
 
   const tpl = Handlebars.compile(readFileSync(TEMPLATE_PATH, "utf-8"));
   const readme = tpl({
