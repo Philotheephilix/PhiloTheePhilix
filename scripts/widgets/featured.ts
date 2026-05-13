@@ -27,10 +27,11 @@ function cardBottom(innerWidth: number): string {
   return `└${"─".repeat(innerWidth + 2)}┘`;
 }
 
-/** Pad a string to exactly n chars (monospace) */
+/** Fit a string to exactly n chars: truncate with ellipsis if too long, pad with spaces if too short. */
 function padLine(text: string, width: number): string {
   const chars = [...text];
-  if (chars.length >= width) return text;
+  if (chars.length === width) return text;
+  if (chars.length > width) return chars.slice(0, width - 1).join("") + "…";
   return text + " ".repeat(width - chars.length);
 }
 
