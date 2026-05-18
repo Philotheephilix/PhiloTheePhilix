@@ -1,1 +1,1 @@
-building connections between agents and value in code.
+building bridges for autonomous wallets and decentralized agents
