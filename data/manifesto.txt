@@ -1,1 +1,1 @@
-building bridges for autonomous wallets and decentralized agents
+building connections between agents and value on-chain.
