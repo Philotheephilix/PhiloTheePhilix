@@ -10,7 +10,7 @@
   <tr>
     <td><img src="assets/widgets/activity.svg" width="300" /></td>
     <td><img src="assets/widgets/active-loops.svg" width="300" /></td>
-    <td><img src="assets/widgets/chains.svg" width="300" /></td>
+    <td><a href="https://cal.com/philotheephilix"><img src="assets/widgets/book-call.svg" width="300" alt="book a call" /></a></td>
   </tr>
   <tr>
     <td><img src="assets/widgets/shipped-this-week.svg" width="300" /></td>

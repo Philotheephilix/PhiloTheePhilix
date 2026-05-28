@@ -15,7 +15,7 @@ describe("render (fixture mode)", () => {
       "hero",
       "activity",
       "active-loops",
-      "chains",
+      "book-call",
       "shipped-this-week",
       "uptime",
       "hackathon",

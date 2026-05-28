@@ -11,11 +11,10 @@ import {
   parseUserStats,
   type FetchedGitHubData,
 } from "./lib/github.js";
-import { computeChainFreshness } from "./lib/chain-map.js";
 import { renderHero } from "./widgets/hero.js";
 import { renderActivity } from "./widgets/activity.js";
 import { renderActiveLoops } from "./widgets/active-loops.js";
-import { renderChains } from "./widgets/chains.js";
+import { renderBookCall } from "./widgets/book-call.js";
 import { renderShippedThisWeek } from "./widgets/shipped-this-week.js";
 import { renderUptime } from "./widgets/uptime.js";
 import { renderHackathon } from "./widgets/hackathon.js";
@@ -88,13 +87,7 @@ async function renderAll(
   const loops = parseActiveLoops(repoPushes, now);
   writeWidget("active-loops", renderActiveLoops({ loops }));
 
-  const repoMeta = ghData.repos.map((r) => ({
-    name: r.name,
-    pushedAt: r.pushedAt,
-    primaryLanguage: r.primaryLanguage?.name ?? null,
-  }));
-  const freshness = computeChainFreshness(repoMeta, profile.chains.overrides, now);
-  writeWidget("chains", renderChains({ freshness: freshness as Record<string, number> }));
+  writeWidget("book-call", renderBookCall(profile.book_call));
 
   const commits = parseRecentCommits(ghData.events, 3);
   writeWidget("shipped-this-week", renderShippedThisWeek({ commits }));

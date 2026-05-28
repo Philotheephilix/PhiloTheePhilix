@@ -36,7 +36,7 @@ export interface Profile {
     seed_lines: string[];
     fallback_pool: string[];
   };
-  chains: { overrides: Record<string, string[]> };
+  book_call: { handle: string };
 }
 
 export function loadProfile(path: string = PROFILE_PATH): Profile {

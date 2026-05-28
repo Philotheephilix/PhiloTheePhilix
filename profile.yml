@@ -61,5 +61,5 @@ manifesto:
     - "compile to intent, deploy to chain"
     - "the wallet is the user"
 
-chains:
-  overrides: {}
+book_call:
+  handle: "philotheephilix"
