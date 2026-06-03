@@ -1,1 +1,1 @@
-rails for ai agents, wallets in the chain.
+building connections between agents and on-chain worlds.
