@@ -6,21 +6,17 @@ import { loadProfile, type Profile } from "./lib/yaml.js";
 import {
   fetchGitHubData,
   parseContributionCalendar,
-  parseActiveLoops,
   parseRecentCommits,
   parseUserStats,
   type FetchedGitHubData,
 } from "./lib/github.js";
 import { renderHero } from "./widgets/hero.js";
 import { renderActivity } from "./widgets/activity.js";
-import { renderActiveLoops } from "./widgets/active-loops.js";
 import { renderBookCall } from "./widgets/book-call.js";
 import { renderShippedThisWeek } from "./widgets/shipped-this-week.js";
 import { renderUptime } from "./widgets/uptime.js";
 import { renderHackathon } from "./widgets/hackathon.js";
 import { renderAvailability } from "./widgets/availability.js";
-import { renderSkills } from "./widgets/skills.js";
-import { renderLocation } from "./widgets/location.js";
 import { renderFeatured } from "./widgets/featured.js";
 import { renderCurrently } from "./widgets/currently.js";
 import { renderSignature } from "./widgets/signature.js";
@@ -80,13 +76,6 @@ async function renderAll(
   const daily = parseContributionCalendar(ghData.calendar, 30, now);
   writeWidget("activity", renderActivity({ daily }));
 
-  const repoPushes = ghData.repos.map((r) => ({
-    name: r.name,
-    pushedAt: r.pushedAt,
-  }));
-  const loops = parseActiveLoops(repoPushes, now);
-  writeWidget("active-loops", renderActiveLoops({ loops }));
-
   writeWidget("book-call", renderBookCall(profile.book_call));
 
   const commits = parseRecentCommits(ghData.events, 3);
@@ -100,9 +89,6 @@ async function renderAll(
 
   writeWidget("hackathon", renderHackathon(profile.hackathon));
   writeWidget("availability", renderAvailability(profile.availability));
-  writeWidget("location", renderLocation(profile.location));
-
-  writeWidget("skills", renderSkills({ repo: "Philotheephilix/.claude" }));
 
   const manifesto = await resolveManifesto(profile, ghData, now);
   writeWidget("hero", renderHero({ ...profile.hero, manifesto }));

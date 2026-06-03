@@ -10,18 +10,15 @@ describe("render (fixture mode)", () => {
     await renderFromFixtures();
   });
 
-  it("writes all 13 widget SVGs", () => {
+  it("writes all 10 widget SVGs", () => {
     const names = [
       "hero",
       "activity",
-      "active-loops",
       "book-call",
       "shipped-this-week",
       "uptime",
       "hackathon",
       "availability",
-      "skills",
-      "location",
       "featured",
       "currently",
       "signature",
