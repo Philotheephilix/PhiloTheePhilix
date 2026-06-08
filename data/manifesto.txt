@@ -1,1 +1,1 @@
-building connections between agents and on-chain worlds.
+bridging ai and blockchain with intent-driven agents
