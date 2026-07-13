@@ -1,1 +1,1 @@
-ship the rail, the train will come
+compile to intent, deploy to chain
