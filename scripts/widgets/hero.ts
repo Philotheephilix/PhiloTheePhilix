@@ -1,4 +1,4 @@
-import { BAND, PATTERNS, svgDoc, displayText, monoText, chip, animSpin } from "../lib/svg.js"
+import { BAND, PATTERNS, svgDoc, displayText, monoText, chip } from "../lib/svg.js"
 
 export interface HeroInput {
   handle: string
@@ -13,7 +13,6 @@ const W = 900
 const H = 340
 
 export function renderHero(input: HeroInput): string {
-  const spinId = "hero-mandala"
   const children: string[] = []
 
   // SVG title for accessibility and handle lookup
@@ -26,7 +25,6 @@ export function renderHero(input: HeroInput): string {
   children.push(`<rect width="${W}" height="${H}" fill="${PATTERNS.flowerCream.replace(/^url\("/, "").replace(/"\)$/, "")}" style="opacity:.13"/>`)
 
   // Spinning mandala — right side decorative (SMIL animateTransform for GitHub compatibility)
-  children.push(animSpin(spinId, 140))
   children.push(`<g>`)
   children.push(`<rect x="530" y="10" width="320" height="320" fill="${PATTERNS.mandalaMotif.replace(/^url\("/, "").replace(/"\)$/, "")}" opacity=".45"/>`)
   children.push(`<animateTransform attributeName="transform" type="rotate" from="0 690 170" to="360 690 170" dur="140s" repeatCount="indefinite"/>`)
