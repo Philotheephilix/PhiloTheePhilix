@@ -72,6 +72,12 @@ describe("field", () => {
     expect(f).toContain('<rect')
     expect(f).toContain('fill="#C93001"')
   })
+  it("strips url(\"...\") wrapper from PATTERNS value — no leading quote in fill", () => {
+    const f = field({ x: 0, y: 0, w: 300, h: 100, bg: "#C93001", dotPattern: PATTERNS.flowerCream, children: "" })
+    // fill must not start with a quote char — that would be a malformed SVG attribute
+    expect(f).not.toContain('fill="\"data:')
+    expect(f).toContain('fill="data:image/svg+xml,')
+  })
 })
 
 describe("displayText", () => {

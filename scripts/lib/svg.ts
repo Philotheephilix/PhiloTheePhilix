@@ -80,7 +80,7 @@ export interface FieldOptions {
 export function field(opts: FieldOptions): string {
   const dotOpacity = opts.dotOpacity ?? 0.14
   // Strip the outer url(...) wrapper to get the bare data URI for use as fill value
-  const fillValue = opts.dotPattern.replace(/^url\(/, "").replace(/\)$/, "")
+  const fillValue = opts.dotPattern.replace(/^url\("/, "").replace(/"\)$/, "")
   return `<rect x="${opts.x}" y="${opts.y}" width="${opts.w}" height="${opts.h}" fill="${opts.bg}"/><rect x="${opts.x}" y="${opts.y}" width="${opts.w}" height="${opts.h}" fill="${fillValue}" style="opacity:${dotOpacity}" />${opts.children}`
 }
 
