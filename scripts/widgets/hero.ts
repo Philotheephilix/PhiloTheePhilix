@@ -1,97 +1,113 @@
-import { renderBanner } from "../lib/figlet.js";
-import {
-  svgDocument,
-  tspan,
-  TUI_PALETTE,
-  animationStyle,
-  cursorSpan,
-} from "../lib/svg.js";
+import { BAND, PATTERNS, svgDoc, displayText, monoText, chip, animSpin } from "../lib/svg.js"
 
 export interface HeroInput {
-  handle: string;
-  subtitle: string;
-  location: string;
-  year: number;
-  tokens: string[];
-  manifesto?: string;
+  handle: string
+  subtitle: string
+  location: string
+  year: number
+  tokens: string[]
+  manifesto?: string
 }
 
-const LINE_HEIGHT = 18;
-const CHAR_WIDTH = 10.8;
-const PADDING_X = 16;
-const PADDING_Y = 20;
+const W = 900
+const H = 340
 
 export function renderHero(input: HeroInput): string {
-  const banner = renderBanner(input.handle, { maxCols: 80 });
-  const bannerLines = banner.split("\n");
-  const children: string[] = [`<title>${input.handle}</title>`];
+  const spinId = "hero-mandala"
+  const children: string[] = []
 
-  children.push(
-    animationStyle([
-      "@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}",
-      ".cursor{animation:blink 1s steps(1) infinite}",
-    ]),
-  );
+  // SVG title for accessibility and handle lookup
+  children.push(`<title>${input.handle}</title>`)
 
-  let y = PADDING_Y + LINE_HEIGHT;
-  for (const line of bannerLines) {
-    children.push(
-      tspan(line, {
-        x: PADDING_X,
-        y,
-        fill: TUI_PALETTE.green,
-        size: 14,
-        weight: 700,
-      }),
-    );
-    y += LINE_HEIGHT;
+  // Background field — vermilion
+  children.push(`<rect width="${W}" height="${H}" fill="${BAND.fieldVerm}"/>`)
+
+  // Dot pattern overlay
+  children.push(`<rect width="${W}" height="${H}" fill="${PATTERNS.flowerCream.replace(/^url\("/, "").replace(/"\)$/, "")}" style="opacity:.13"/>`)
+
+  // Spinning mandala — right side decorative (SMIL animateTransform for GitHub compatibility)
+  children.push(animSpin(spinId, 140))
+  children.push(`<g>`)
+  children.push(`<rect x="530" y="10" width="320" height="320" fill="${PATTERNS.mandalaMotif.replace(/^url\("/, "").replace(/"\)$/, "")}" opacity=".45"/>`)
+  children.push(`<animateTransform attributeName="transform" type="rotate" from="0 690 170" to="360 690 170" dur="140s" repeatCount="indefinite"/>`)
+  children.push(`</g>`)
+
+  // Chrome accent line at top
+  children.push(`<rect x="0" y="0" width="${W}" height="6" fill="${BAND.chrome}"/>`)
+
+  // Eyebrow label
+  children.push(monoText({
+    x: 32,
+    y: 48,
+    text: `full stack · web3 · ai — ${input.location} · ${input.year}`,
+    size: 11,
+    fill: BAND.turmeric,
+    letterSpacing: 0.18,
+  }))
+
+  // Wordmark — three lines of Archivo at large size
+  // Display the handle across three visual lines
+  const displayLines = ["philo", "thee", "philix"]
+  const handleLower = input.handle.toLowerCase()
+  // If the handle contains "philotheephilix" use those segments, otherwise split generically
+  const usedLines = handleLower.includes("philotheephilix")
+    ? ["philo", "thee", "philix"]
+    : displayLines
+  const fontSizes = [88, 72, 60]
+  const wdths = [125, 78, 104]
+  let nameY = 76
+
+  for (let i = 0; i < usedLines.length; i++) {
+    children.push(displayText({
+      x: 30,
+      y: nameY,
+      text: usedLines[i]!,
+      size: fontSizes[i]!,
+      fill: i === 1 ? BAND.turmeric : BAND.cream,
+      weight: 900,
+      wdth: wdths[i]!,
+      letterSpacing: -0.035,
+    }))
+    nameY += (fontSizes[i]! * 0.88)
   }
 
-  y += 14;
+  // Subtitle
+  children.push(monoText({
+    x: 32,
+    y: 272,
+    text: input.subtitle,
+    size: 13,
+    fill: BAND.cream,
+  }))
 
-  const subtitleText = `// ${input.subtitle}`;
-  const subtitleWidth = subtitleText.length * 7.5;
-  children.push(`<clipPath id="hero-sub-reveal"><rect x="${PADDING_X}" y="${y - LINE_HEIGHT}" height="${LINE_HEIGHT * 1.5}" width="0"><animate attributeName="width" from="0" to="${subtitleWidth}" dur="1.2s" begin="0.1s" fill="freeze"/></rect></clipPath>`);
-  children.push(`<g clip-path="url(#hero-sub-reveal)">${tspan(subtitleText, { x: PADDING_X, y, fill: TUI_PALETTE.white, size: 13 })}</g>`);
-  const subtitleEndX = PADDING_X + subtitleWidth;
-  children.push(cursorSpan({ x: subtitleEndX + 2, y, fill: TUI_PALETTE.white, size: 13 }));
-
-  y += LINE_HEIGHT;
-  children.push(
-    tspan(
-      `// ${input.location} · ai × web3 · ${input.year}`,
-      { x: PADDING_X, y, fill: TUI_PALETTE.dim, size: 12 },
-    ),
-  );
-  y += LINE_HEIGHT + 12;
-
-  if (input.manifesto && input.manifesto.trim().length > 0) {
-    children.push(
-      tspan(`▸ ${input.manifesto}`, {
-        x: PADDING_X,
-        y,
-        fill: TUI_PALETTE.dim,
-        size: 12,
-      }),
-    );
-    y += LINE_HEIGHT + 4;
+  // Manifesto chip
+  if (input.manifesto?.trim()) {
+    children.push(monoText({
+      x: 32,
+      y: 296,
+      text: `▸ ${input.manifesto}`,
+      size: 11,
+      fill: "rgba(255,244,228,0.7)",
+    }))
   }
 
-  const tokenText = input.tokens.map((t) => `[ ${t} ]`).join("  ");
-  children.push(
-    tspan(tokenText, {
-      x: PADDING_X,
-      y,
-      fill: TUI_PALETTE.cyan,
-      size: 13,
-      weight: 600,
-    }),
-  );
+  // Token chips
+  let chipX = 32
+  const chipY = 314
+  for (const token of input.tokens) {
+    children.push(chip({
+      x: chipX,
+      y: chipY,
+      label: token,
+      fill: BAND.turmeric,
+      textFill: BAND.maroon,
+      fontSize: 11,
+      paddingX: 9,
+      paddingY: 4,
+      borderRadius: 2,
+    }))
+    chipX += token.length * 7 + 28
+  }
 
-  const width = Math.max(
-    900,
-    Math.max(...bannerLines.map((l) => l.length)) * CHAR_WIDTH + PADDING_X * 2,
-  );
-  const height = y + PADDING_Y;
-  return svgDocument({ width: Math.ceil(width), height, children: children.join("") });
+  return svgDoc({ width: W, height: H, bg: BAND.fieldVerm, children: children.join("") })
 }
