@@ -1,17 +1,24 @@
-import { svgDocument, tspan, TUI_PALETTE, animationStyle, radarPingCircle } from "../lib/svg.js";
+import { BAND, PATTERNS, svgDoc, monoText, displayText, animPulse } from "../lib/svg.js"
 
 export interface BookCallInput {
-  handle: string;
+  handle: string
 }
 
+const W = 300
+const H = 140
+
 export function renderBookCall(input: BookCallInput): string {
-  const children =
-    animationStyle(["@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}.cursor{animation:blink 1.1s step-end infinite}"]) +
-    tspan("BOOK A CALL", { x: 14, y: 22, fill: TUI_PALETTE.dim, size: 10, letterSpacing: 1.8 }) +
-    radarPingCircle({ cx: 270, cy: 18, durationMs: 2200, stroke: TUI_PALETTE.green }) +
-    `<circle cx="270" cy="18" r="2.5" fill="${TUI_PALETTE.green}"/>` +
-    tspan("SPEAK WITH ME", { x: 14, y: 64, fill: TUI_PALETTE.cyan, size: 18, weight: 700 }) +
-    tspan(`cal.com/${input.handle}`, { x: 14, y: 96, fill: TUI_PALETTE.white, size: 12 }) +
-    `<text x="${14 + input.handle.length * 7.2 + 60}" y="96" fill="${TUI_PALETTE.green}" font-family="'JetBrains Mono', 'Menlo', monospace" font-size="12" font-weight="600" class="cursor" xml:space="preserve">→</text>`;
-  return svgDocument({ width: 300, height: 120, children });
+  const pulseId = "bookcall"
+  const children: string[] = []
+  children.push(animPulse(pulseId))
+  children.push(`<rect width="${W}" height="${H}" fill="${BAND.fieldRani}"/>`)
+  children.push(`<rect width="${W}" height="${H}" fill="${PATTERNS.flowerCream.replace(/^url\("/, "").replace(/"\)$/, "")}" style="opacity:.14"/>`)
+  children.push(`<rect x="0" y="0" width="${W}" height="4" fill="${BAND.chrome}"/>`)
+  children.push(monoText({ x: 16, y: 26, text: "book a call", size: 10, fill: "rgba(255,244,228,0.65)", letterSpacing: 0.18 }))
+  // Pulsing availability dot
+  children.push(`<circle cx="270" cy="20" r="5" fill="${BAND.turmeric}" class="pulse-${pulseId}"/>`)
+  children.push(displayText({ x: 14, y: 78, text: "let's talk", size: 38, fill: BAND.cream, weight: 900, wdth: 112 }))
+  children.push(monoText({ x: 16, y: 102, text: `cal.com/${input.handle}`, size: 12, fill: "rgba(255,244,228,0.85)" }))
+  children.push(monoText({ x: 16, y: 122, text: `→ schedule 30 min`, size: 11, fill: BAND.turmeric }))
+  return svgDoc({ width: W, height: H, bg: BAND.fieldRani, children: children.join("") })
 }

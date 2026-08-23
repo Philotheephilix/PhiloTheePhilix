@@ -1,60 +1,37 @@
-import { svgDocument, tspan, TUI_PALETTE } from "../lib/svg.js";
+import { BAND, PATTERNS, svgDoc, monoText } from "../lib/svg.js"
 
 export interface SignatureInput {
-  web: string;
-  github: string;
-  email: string;
-  linkedin: string;
-  refreshNow: string;
-  refreshNext: string;
+  web: string
+  github: string
+  email: string
+  linkedin: string
+  refreshNow: string
+  refreshNext: string
 }
 
-const LABEL_X = 14;
-const VALUE_X = 88;
-const HEADER_Y = 22;
-const ROWS_START_Y = 50;
-const ROW_H = 20;
+const W = 300
+const H = 180
 
 export function renderSignature(input: SignatureInput): string {
-  const rows: Array<{ label: string; value: string; valueFill: string }> = [
-    { label: "web", value: input.web, valueFill: TUI_PALETTE.cyan },
-    { label: "gh", value: input.github, valueFill: TUI_PALETTE.cyan },
-    { label: "mail", value: input.email, valueFill: TUI_PALETTE.white },
-    { label: "linkedin", value: input.linkedin, valueFill: TUI_PALETTE.cyan },
-  ];
+  const children: string[] = []
+  children.push(`<rect width="${W}" height="${H}" fill="${BAND.cream}"/>`)
+  children.push(`<rect width="${W}" height="${H}" fill="${PATTERNS.flowerMaroon.replace(/^url\("/, "").replace(/"\)$/, "")}" style="opacity:.08"/>`)
+  children.push(`<rect x="0" y="0" width="${W}" height="4" fill="${BAND.maroon}"/>`)
+  children.push(monoText({ x: 16, y: 26, text: "signature", size: 10, fill: "rgba(74,11,16,0.55)", letterSpacing: 0.18 }))
 
-  const refreshY = ROWS_START_Y + rows.length * ROW_H + 14;
-  const height = refreshY + 18 + 14;
+  const rows = [
+    { label: "web",      value: input.web,      fill: BAND.bottle },
+    { label: "github",   value: input.github,   fill: BAND.bottle },
+    { label: "email",    value: input.email,    fill: BAND.maroon },
+    { label: "linkedin", value: input.linkedin, fill: BAND.bottle },
+  ]
+  rows.forEach(({ label, value, fill }, i) => {
+    const y = 50 + i * 26
+    children.push(monoText({ x: 16, y, text: label, size: 11, fill: "rgba(74,11,16,0.5)" }))
+    children.push(monoText({ x: 82, y, text: value, size: 11, fill }))
+  })
 
-  const children: string[] = [
-    tspan("SIGNATURE", {
-      x: LABEL_X,
-      y: HEADER_Y,
-      fill: TUI_PALETTE.dim,
-      size: 10,
-      letterSpacing: 1.8,
-    }),
-  ];
+  children.push(monoText({ x: 16, y: 162, text: `refreshed ${input.refreshNow} · next ${input.refreshNext}`, size: 9, fill: "rgba(74,11,16,0.4)" }))
 
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i]!;
-    const y = ROWS_START_Y + i * ROW_H;
-    children.push(
-      tspan(row.label, { x: LABEL_X, y, fill: TUI_PALETTE.dim, size: 12 }),
-    );
-    children.push(
-      tspan(row.value, { x: VALUE_X, y, fill: row.valueFill, size: 12 }),
-    );
-  }
-
-  children.push(
-    tspan(`last refresh: ${input.refreshNow} · next: ${input.refreshNext}`, {
-      x: LABEL_X,
-      y: refreshY,
-      fill: TUI_PALETTE.dim,
-      size: 10,
-    }),
-  );
-
-  return svgDocument({ width: 300, height, children: children.join("") });
+  return svgDoc({ width: W, height: H, bg: BAND.cream, children: children.join("") })
 }
