@@ -1,46 +1,21 @@
-import { svgDocument, tspan, TUI_PALETTE } from "../lib/svg.js";
+import { BAND, PATTERNS, svgDoc, monoText, displayText } from "../lib/svg.js"
 
 export interface CurrentlyInput {
-  items: string[];
+  items: string[]
 }
 
+const W = 300
+
 export function renderCurrently(input: CurrentlyInput): string {
-  const HEADER_Y = 22;
-  const TITLE_Y = 46;
-  const ITEMS_START_Y = 68;
-  const LINE_H = 20;
-  const height = 30 + 22 + input.items.length * LINE_H + 14;
-
-  const children: string[] = [
-    tspan("CURRENTLY", {
-      x: 14,
-      y: HEADER_Y,
-      fill: TUI_PALETTE.dim,
-      size: 10,
-      letterSpacing: 1.8,
-    }),
-    tspan("CURRENTLY", {
-      x: 14,
-      y: TITLE_Y,
-      fill: TUI_PALETTE.white,
-      size: 12,
-      weight: 600,
-    }),
-  ];
-
+  const H = Math.max(160, 60 + input.items.length * 26 + 24)
+  const children: string[] = []
+  children.push(`<rect width="${W}" height="${H}" fill="${BAND.fieldVerm}"/>`)
+  children.push(`<rect width="${W}" height="${H}" fill="${PATTERNS.flowerCream.replace(/^url\("/, "").replace(/"\)$/, "")}" style="opacity:.14"/>`)
+  children.push(`<rect x="0" y="0" width="${W}" height="4" fill="${BAND.chrome}"/>`)
+  children.push(monoText({ x: 16, y: 26, text: "currently", size: 10, fill: "rgba(255,244,228,0.65)", letterSpacing: 0.18 }))
+  children.push(displayText({ x: 14, y: 52, text: "now()", size: 28, fill: BAND.turmeric, weight: 900, wdth: 112, letterSpacing: -0.02 }))
   for (let i = 0; i < input.items.length; i++) {
-    const isLast = i === input.items.length - 1;
-    const glyph = isLast ? "└─" : "├─";
-    const line = `  ${glyph} ${input.items[i]}`;
-    children.push(
-      tspan(line, {
-        x: 14,
-        y: ITEMS_START_Y + i * LINE_H,
-        fill: TUI_PALETTE.white,
-        size: 12,
-      }),
-    );
+    children.push(monoText({ x: 16, y: 74 + i * 26, text: `▸ ${input.items[i]}`, size: 12, fill: BAND.cream }))
   }
-
-  return svgDocument({ width: 300, height: Math.max(80, height), children: children.join("") });
+  return svgDoc({ width: W, height: H, bg: BAND.fieldVerm, children: children.join("") })
 }
