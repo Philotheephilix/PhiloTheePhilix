@@ -19,6 +19,8 @@ import {
   monoText,
   sparkBar,
   chip,
+  animPulse,
+  animSpin,
 } from "../../scripts/lib/svg.js";
 
 describe("BAND palette", () => {
@@ -192,3 +194,22 @@ describe("radarPingCircle", () => {
     expect(out).toContain('dur="3s"');
   });
 });
+
+describe("animPulse", () => {
+  it("returns a style block with CSS keyframes and pulse class", () => {
+    const s = animPulse("test")
+    expect(s).toContain("<style>")
+    expect(s).toContain("@keyframes pulse-test")
+    expect(s).toContain(".pulse-test")
+  })
+})
+
+describe("animSpin", () => {
+  it("returns a style block with CSS keyframes and spin class", () => {
+    const s = animSpin("hero", 140)
+    expect(s).toContain("<style>")
+    expect(s).toContain("@keyframes spin-hero")
+    expect(s).toContain(".spin-hero")
+    expect(s).toContain("140s")
+  })
+})
