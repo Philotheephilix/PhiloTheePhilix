@@ -1,1 +1,1 @@
-compile to intent, deploy to chain
+the wallet is the user
